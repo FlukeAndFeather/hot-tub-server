@@ -9,16 +9,29 @@ void setup() {
 }
 
 void loop() {
-  char input[INPUT_SZ + 1], *comm, *arg;
+  char input[INPUT_SZ + 1], comm[INPUT_SZ + 1], arg[INPUT_SZ + 1];
+  char input_sep[] = ":";
   
   // Check for input
   if (Serial.available() > 0) {
-    byte size = Serial.readBytes(input, INPUT_SZ);
-    // Add a terminal 0 to complete the string
-    input[size] = 0;
-    Serial.println(input);
+    readInput(input, comm, arg, input_sep);
+    Serial.println(comm);
+    Serial.println(arg);
   }
 }
+
+void readInput(char* input, char* comm, char* arg, char* sep) {
+  byte size = Serial.readBytes(input, INPUT_SZ);
+  // Add a terminal 0 to complete the string
+  input[size] = 0;
+
+  // Split input into command and argument
+  char *pch = strtok(input, sep);
+  strcpy(comm, pch);
+  pch = strtok(NULL, sep);
+  strcpy(arg, pch);
+}
+
   /*
   byte i;
   byte present = 0;
