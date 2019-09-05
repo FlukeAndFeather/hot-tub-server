@@ -1,23 +1,25 @@
-// Copied from https://www.tweaking4all.com/hardware/arduino/arduino-ds18b20-temperature-sensor/
-
 #include <Arduino.h>
-#include <OneWire.h>
 
-// DS18B20 data line on pin 4
-#define SUBTEMP_PIN 4
-OneWire ds(SUBTEMP_PIN);
+#define INPUT_SZ 10
 
 void setup() {
   // Connect to Serial
   Serial.begin(9600);
   while (!Serial);
-
-  pinMode(SUBTEMP_PIN, INPUT);
 }
 
 void loop() {
-  // Check for input
+  char input[INPUT_SZ + 1], *comm, *arg;
   
+  // Check for input
+  if (Serial.available() > 0) {
+    byte size = Serial.readBytes(input, INPUT_SZ);
+    // Add a terminal 0 to complete the string
+    input[size] = 0;
+    Serial.println(input);
+  }
+}
+  /*
   byte i;
   byte present = 0;
   byte type_s;
@@ -52,7 +54,7 @@ void loop() {
   /* 
    * Why Reset twice? Why do we write 0x44 and 0xBE? Why the delay? 
    */
-
+/*
   // Read 9 bytes
   for (i = 0; i < 9; i++) {
     data[i] = ds.read();
@@ -69,3 +71,4 @@ void loop() {
   celsius = (float)raw / 16.0;
   Serial.println(celsius);
 }
+*/
